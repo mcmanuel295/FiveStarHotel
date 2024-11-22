@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# Spring Boot-specific files
+!.mvn/wrapper/maven-wrapper.properties
+!**/src/main/resources/application.properties
+!**/src/main/resources/application.yml
+
+
+# Large files
+*.bin
+*.exe
+*.dll
+*.zip
+*.tar.gz
