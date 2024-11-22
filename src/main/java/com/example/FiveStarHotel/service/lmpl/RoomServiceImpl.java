@@ -68,8 +68,8 @@ public class RoomServiceImpl implements RoomService {
         Response response = new Response();
 
         try {
-            List<Room> roomListt = roomRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-            List<RoomDto> roomDtoList = Utils.mapRoomListEntityToRoomListDto(roomListt);
+            List<Room> roomList = roomRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            List<RoomDto> roomDtoList = Utils.mapRoomListEntityToRoomListDto(roomList);
 
             response.setStatusCode(200);
             response.setMessage("successful");
@@ -106,7 +106,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Response updateRoom(long roomId, String roomDescription, String roomType, BigDecimal roomPrice, MultipartFile photo) {
+    public Response updateRoom(long roomId, String roomType, BigDecimal roomPrice,String roomDescription, MultipartFile photo) {
         Response response = new Response();
 
         try {
@@ -186,7 +186,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Response getAllAvailabeRooms() {
+    public Response getAllAvailableRooms() {
         Response response = new Response();
         try{
             List<Room> availableRooms = roomRepo.getAllAvailableRooms();

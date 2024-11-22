@@ -17,13 +17,13 @@ public interface RoomService {
 
     Response deleteRoom(long roomId);
 
-    Response updateRoom(long roomId, String roomDescription, String roomType, BigDecimal roomPrice, MultipartFile photo);
+    Response updateRoom(long roomId,String roomType, BigDecimal roomPrice,String roomDescription, MultipartFile photo);
 
     Response getRoomById(long roomId);
 
     Response getAvailableRoomsByDateAndType(LocalDate checkInDate,LocalDate checkOutDate,String roomType);
 
-    Response getAllAvailabeRooms();
+    Response getAllAvailableRooms();
 
 
 }
