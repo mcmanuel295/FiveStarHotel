@@ -37,7 +37,8 @@ build/
 !.mvn/wrapper/maven-wrapper.properties
 !**/src/main/resources/application.properties
 !**/src/main/resources/application.yml
-
+.idea/
+.classes/
 
 # Large files
 *.bin
