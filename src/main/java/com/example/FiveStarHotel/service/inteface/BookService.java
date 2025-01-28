@@ -5,8 +5,8 @@ import com.example.FiveStarHotel.model.Booking;
 
 public interface BookService {
 
-    Response saveBooking(Long rooomdId, Long userId, Booking bookingRequest);
-    Response findBookingByConfirmationCode(String comfiramationCode);
+    Response saveBooking(Long roomId, Long userId, Booking bookingRequest);
+    Response findBookingByConfirmationCode(String confirmationCode);
     Response getALlBookings();
     Response cancelBooking(Long booingId);
 }

@@ -17,8 +17,8 @@ public class BookingController {
 
     @PostMapping("/book-room/{roomId}/{userId}")
     @PreAuthorize("hasAuthority('ADMIN') or hsdAuthority('USER")
-    public ResponseEntity<Response> saveBooings(@PathVariable Long roomId,
-                                                @PathVariable long userId,
+    public ResponseEntity<Response> saveBookings(@PathVariable Long roomId,
+                                                @PathVariable Long userId,
                                                 @RequestBody Booking bookingRequest){
         Response response =  bookService.saveBooking(roomId,userId,bookingRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);

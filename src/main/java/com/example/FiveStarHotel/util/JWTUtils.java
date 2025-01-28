@@ -2,7 +2,6 @@ package com.example.FiveStarHotel.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.springframework.security.core.userdetails.UserDetails;
 

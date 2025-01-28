@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     private UserRepo userRepo;
 
     @Override
-    public Response saveBooking(Long roomdId, Long userId, Booking bookingRequest) {
+    public Response saveBooking(Long roomId, Long userId, Booking bookingRequest) {
         Response response = new Response();
 
         try {
@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
                 throw new IllegalArgumentException("Check indDate must come after check oiut date");
             }
 
-            Room room = roomRepo.findById(roomdId).orElseThrow(() -> new OurException("Room Not Found"));
+            Room room = roomRepo.findById(roomId).orElseThrow(() -> new OurException("Room Not Found"));
             User user = userRepo.findById(userId).orElseThrow(() -> new OurException("User Not Found"));
 
             List<Booking> existingBooking = room.getBookings();
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
         Response response = new Response();
 
         try {
-            Booking booking = bookingRepo.findByBookingConfirmationCode(confirmationCode).orElseThrow(()-> new OurException("Booking NOt Found"));
+            Booking booking = bookingRepo.findByBookingConfirmationCode(confirmationCode).orElseThrow(()-> new OurException("Booking Not Found"));
             BookingDto bookingDto = Utils.mapBookingsEntityToBookingsDto(booking);
 
             response.setStatusCode(200);
