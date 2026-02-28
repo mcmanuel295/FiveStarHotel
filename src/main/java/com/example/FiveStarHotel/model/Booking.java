@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDate;
 
-@Data
+@Sette
 @Entity
 @Table(name = "bookings")
 public class Booking {
