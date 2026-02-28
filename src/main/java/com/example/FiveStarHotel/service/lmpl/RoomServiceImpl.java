@@ -6,6 +6,7 @@ import com.example.FiveStarHotel.exception.OurException;
 import com.example.FiveStarHotel.model.Room;
 import com.example.FiveStarHotel.repository.BookingRepo;
 import com.example.FiveStarHotel.repository.RoomRepo;
+import com.example.FiveStarHotel.service.AwsS3Service;
 import com.example.FiveStarHotel.service.inteface.RoomService;
 import com.example.FiveStarHotel.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class RoomServiceImpl implements RoomService {
         Response response = new Response();
 
         try {
-            String imageUrl =awsS3Service.saveImage(photo);
+            String imageUrl =awsS3Service.saveImageToS3(photo);
 
             Room room = new Room();
             room.setRoomPhotoUrl(imageUrl);
@@ -113,7 +114,7 @@ public class RoomServiceImpl implements RoomService {
             String imageUrl = null;
 
             if (photo != null && !photo.isEmpty()) {
-                imageUrl = awsS3Service.saveImage(photo);
+                imageUrl = awsS3Service.saveImageToS3(photo);
             }
 
             Room room = roomRepo.findById(roomId).orElseThrow(()-> new OurException("Room Not Found"));

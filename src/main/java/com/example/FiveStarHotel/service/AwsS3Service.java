@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 
-public class AwsService {
+public class AwsS3Service {
 
     String bucketName ="five-star-images";
 
