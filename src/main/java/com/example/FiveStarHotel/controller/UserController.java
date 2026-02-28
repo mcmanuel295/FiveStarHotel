@@ -3,7 +3,6 @@ package com.example.FiveStarHotel.controller;
 import com.example.FiveStarHotel.dto.Response;
 import com.example.FiveStarHotel.service.inteface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -41,6 +40,7 @@ public class UserController {
     public ResponseEntity<Response> getloggedInUserProfile(@PathVariable("userId") String userId){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
         String email  =authentication.getName();
         Response response = userService.getMyInfo(email);
         return ResponseEntity.status(response.getStatusCode()).body(response);
