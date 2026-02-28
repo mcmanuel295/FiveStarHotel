@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
-
-@Getter
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
