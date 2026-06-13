@@ -1,9 +1,8 @@
 package com.example.FiveStarHotel.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 import java.time.LocalDate;
+import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,5 +17,4 @@ public class BookingDto {
     private String bookingConfirmationCode;
     private UserDto user;
     private RoomDto room;
-
 }

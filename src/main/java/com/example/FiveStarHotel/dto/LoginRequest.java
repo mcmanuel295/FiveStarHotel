@@ -8,6 +8,7 @@ public class LoginRequest {
 
     @NotBlank(message = "Email is required for the login")
     private String email;
+
     @NotBlank(message = "Password is required for the login")
     private String password;
 }
