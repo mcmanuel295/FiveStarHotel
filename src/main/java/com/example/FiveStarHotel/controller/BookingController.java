@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bookings")
 public class BookingController {
 
-    @Autowired
-    private BookService bookService;
+    @Autowired private BookService bookService;
 
     @PostMapping("/book-room/{roomId}/{userId}")
     @PreAuthorize("hasAuthority('ADMIN') or hsdAuthority('USER")
-    public ResponseEntity<Response> saveBookings(@PathVariable Long roomId,
-                                                @PathVariable Long userId,
-                                                @RequestBody Booking bookingRequest){
-        Response response =  bookService.saveBooking(roomId,userId,bookingRequest);
+    public ResponseEntity<Response> saveBookings(
+            @PathVariable Long roomId,
+            @PathVariable Long userId,
+            @RequestBody Booking bookingRequest) {
+        Response response = bookService.saveBooking(roomId, userId, bookingRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);
-
     }
 
     @GetMapping("/all")
@@ -33,7 +32,8 @@ public class BookingController {
     }
 
     @GetMapping("/get-by-confirmation-code/{confirmationCode}")
-    public ResponseEntity<Response> getBookingsByConfirmationCode(@PathVariable String confirmationCode) {
+    public ResponseEntity<Response> getBookingsByConfirmationCode(
+            @PathVariable String confirmationCode) {
         Response response = bookService.findBookingByConfirmationCode(confirmationCode);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }

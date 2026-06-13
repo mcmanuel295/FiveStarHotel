@@ -13,41 +13,39 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @PostMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN'")
-    public ResponseEntity<Response> getAllUsers(){
+    public ResponseEntity<Response> getAllUsers() {
         Response response = userService.getAllUsers();
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-
     @GetMapping("/get-By-Id/{userID}")
-    public ResponseEntity<Response> getById(@PathVariable("userId") String userId){
+    public ResponseEntity<Response> getById(@PathVariable("userId") String userId) {
         Response response = userService.getUserById(userId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @GetMapping("/delete/{userID}")
-    public ResponseEntity<Response> deleteById(@PathVariable("userId") String userId){
+    public ResponseEntity<Response> deleteById(@PathVariable("userId") String userId) {
         Response response = userService.deleteUser(userId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @GetMapping("/get-logged-in-profile-info/{userID}")
-    public ResponseEntity<Response> getloggedInUserProfile(@PathVariable("userId") String userId){
+    public ResponseEntity<Response> getloggedInUserProfile(@PathVariable("userId") String userId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         assert authentication != null;
-        String email  =authentication.getName();
+        String email = authentication.getName();
         Response response = userService.getMyInfo(email);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @GetMapping("/get-user-bookings/{userID}")
-    public ResponseEntity<Response> getUserBookingsHistory(@PathVariable("userId") String userId){
+    public ResponseEntity<Response> getUserBookingsHistory(@PathVariable("userId") String userId) {
         Response response = userService.getUserBookingsHistory(userId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
