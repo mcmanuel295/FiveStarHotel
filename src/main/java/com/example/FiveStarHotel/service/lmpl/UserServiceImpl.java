@@ -9,38 +9,33 @@ import com.example.FiveStarHotel.repository.UserRepo;
 import com.example.FiveStarHotel.service.inteface.UserService;
 import com.example.FiveStarHotel.util.JWTUtils;
 import com.example.FiveStarHotel.util.Utils;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepo userRepo;
+    @Autowired private UserRepo userRepo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Autowired private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JWTUtils jwtUtils;
+    @Autowired private JWTUtils jwtUtils;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    @Autowired AuthenticationManager authenticationManager;
 
     @Override
     public Response register(User user) {
         Response response = new Response();
         try {
-            if (user.getRole()==null || user.getRole().isBlank()) {
+            if (user.getRole() == null || user.getRole().isBlank()) {
                 user.setRole("USER");
             }
 
             if (userRepo.existsByEmail(user.getEmail())) {
-                throw new OurException(user.getEmail()+" already exist");
+                throw new OurException(user.getEmail() + " already exist");
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepo.save(user);
@@ -48,14 +43,12 @@ public class UserServiceImpl implements UserService {
             response.setStatusCode(200);
             response.setUser(userDto);
 
-         }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Registration" +ex.getMessage());
+            response.setMessage("Error Occurred During User Registration" + ex.getMessage());
         }
 
         return response;
@@ -66,8 +59,12 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
-            User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow(()-> new OurException("User Not Found"));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(), loginRequest.getPassword()));
+            User user =
+                    userRepo.findByEmail(loginRequest.getEmail())
+                            .orElseThrow(() -> new OurException("User Not Found"));
 
             var jwt = jwtUtils.generateToken(user);
             response.setStatusCode(200);
@@ -75,14 +72,12 @@ public class UserServiceImpl implements UserService {
             response.setRole(user.getRole());
             response.setExpirationTime("7 days");
             response.setMessage("successful");
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Login" +ex.getMessage());
+            response.setMessage("Error Occurred During User Login" + ex.getMessage());
         }
 
         return response;
@@ -100,10 +95,9 @@ public class UserServiceImpl implements UserService {
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setUserList(userDtoLists);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Getting All Users" +ex.getMessage());
+            response.setMessage("Error Getting All Users" + ex.getMessage());
         }
 
         return response;
@@ -115,20 +109,20 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
         try {
 
-            User user = userRepo.findById( Long.valueOf(userID)).orElseThrow( ()-> new OurException("User Not Found"));
+            User user =
+                    userRepo.findById(Long.valueOf(userID))
+                            .orElseThrow(() -> new OurException("User Not Found"));
             UserDto userDto = Utils.mapUserEntityToUseDtoPlusUserBookingsAndUserRoom(user);
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setUser(userDto);
 
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Registration" +ex.getMessage());
+            response.setMessage("Error Occurred During User Registration" + ex.getMessage());
         }
 
         return response;
@@ -139,21 +133,19 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
         try {
 
-            userRepo.findById( Long.valueOf(userID)).orElseThrow( ()-> new OurException("User Not Found"));
+            userRepo.findById(Long.valueOf(userID))
+                    .orElseThrow(() -> new OurException("User Not Found"));
             userRepo.deleteById(Long.valueOf(userID));
             response.setStatusCode(200);
             response.setMessage("successful");
 
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Registration" +ex.getMessage());
+            response.setMessage("Error Occurred During User Registration" + ex.getMessage());
         }
-
 
         return null;
     }
@@ -163,20 +155,20 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
         try {
 
-            User user = userRepo.findById( Long.valueOf(userID)).orElseThrow( ()-> new OurException("User Not Found"));
+            User user =
+                    userRepo.findById(Long.valueOf(userID))
+                            .orElseThrow(() -> new OurException("User Not Found"));
             UserDto userDto = Utils.mapUserEntityToUserDto(user);
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setUser(userDto);
 
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Registration" +ex.getMessage());
+            response.setMessage("Error Occurred During User Registration" + ex.getMessage());
         }
 
         return response;
@@ -187,23 +179,22 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
         try {
 
-            User user = userRepo.findByEmail(email).orElseThrow( ()-> new OurException("User Not Found"));
+            User user =
+                    userRepo.findByEmail(email)
+                            .orElseThrow(() -> new OurException("User Not Found"));
             UserDto userDto = Utils.mapUserEntityToUserDto(user);
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setUser(userDto);
 
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error Occurred During User Registration" +ex.getMessage());
+            response.setMessage("Error Occurred During User Registration" + ex.getMessage());
         }
 
         return response;
     }
-
 }

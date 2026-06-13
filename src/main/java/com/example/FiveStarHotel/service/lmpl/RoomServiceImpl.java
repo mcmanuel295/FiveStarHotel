@@ -9,35 +9,30 @@ import com.example.FiveStarHotel.repository.RoomRepo;
 import com.example.FiveStarHotel.service.AwsS3Service;
 import com.example.FiveStarHotel.service.inteface.RoomService;
 import com.example.FiveStarHotel.util.Utils;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 public class RoomServiceImpl implements RoomService {
-        @Autowired
-        private RoomRepo roomRepo;
+    @Autowired private RoomRepo roomRepo;
 
-        @Autowired
-        private BookingRepo bookingRepo;
+    @Autowired private BookingRepo bookingRepo;
 
-        @Autowired
-        AwsS3Service awsS3Service;
+    @Autowired AwsS3Service awsS3Service;
 
     @Override
-    public Response addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice, String roomDescription) {
-
-
+    public Response addNewRoom(
+            MultipartFile photo, String roomType, BigDecimal roomPrice, String roomDescription) {
 
         Response response = new Response();
 
         try {
-            String imageUrl =awsS3Service.saveImageToS3(photo);
+            String imageUrl = awsS3Service.saveImageToS3(photo);
 
             Room room = new Room();
             room.setRoomPhotoUrl(imageUrl);
@@ -50,10 +45,9 @@ public class RoomServiceImpl implements RoomService {
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoom(roomDto);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error saving a room "+ ex.getMessage());
+            response.setMessage("Error saving a room " + ex.getMessage());
         }
 
         return response;
@@ -75,10 +69,9 @@ public class RoomServiceImpl implements RoomService {
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoomList(roomDtoList);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error saving a room "+ ex.getMessage());
+            response.setMessage("Error saving a room " + ex.getMessage());
         }
 
         return response;
@@ -89,25 +82,28 @@ public class RoomServiceImpl implements RoomService {
         Response response = new Response();
 
         try {
-            roomRepo.findById(roomId).orElseThrow(()-> new OurException("Room Not Found"));
+            roomRepo.findById(roomId).orElseThrow(() -> new OurException("Room Not Found"));
             roomRepo.deleteById(roomId);
             response.setStatusCode(200);
             response.setMessage("successful");
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error saving a room "+ ex.getMessage());
+            response.setMessage("Error saving a room " + ex.getMessage());
         }
 
         return response;
     }
 
     @Override
-    public Response updateRoom(long roomId, String roomType, BigDecimal roomPrice,String roomDescription, MultipartFile photo) {
+    public Response updateRoom(
+            long roomId,
+            String roomType,
+            BigDecimal roomPrice,
+            String roomDescription,
+            MultipartFile photo) {
         Response response = new Response();
 
         try {
@@ -117,51 +113,46 @@ public class RoomServiceImpl implements RoomService {
                 imageUrl = awsS3Service.saveImageToS3(photo);
             }
 
-            Room room = roomRepo.findById(roomId).orElseThrow(()-> new OurException("Room Not Found"));
+            Room room =
+                    roomRepo.findById(roomId).orElseThrow(() -> new OurException("Room Not Found"));
 
             if (roomType != null) room.setRoomType(roomType);
-            if(roomPrice !=null) room.setRoomPrice(roomPrice);
-            if (roomDescription !=null) room.setRoomDescription(roomDescription);
+            if (roomPrice != null) room.setRoomPrice(roomPrice);
+            if (roomDescription != null) room.setRoomDescription(roomDescription);
             if (imageUrl != null) room.setRoomPhotoUrl(imageUrl);
 
             Room updateRoom = roomRepo.save(room);
             RoomDto roomDto = Utils.mapRoomEntityToRoomDto(updateRoom);
 
-
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoom(roomDto);
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage(ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
-            response.setMessage("Error saving a room "+ ex.getMessage());
+            response.setMessage("Error saving a room " + ex.getMessage());
         }
 
         return response;
     }
 
-
     @Override
     public Response getRoomById(long roomId) {
-        Response response
-                 = new Response();
-        try{
-            Room room= roomRepo.findById(roomId).orElseThrow(()-> new OurException("Room Not Found"));
+        Response response = new Response();
+        try {
+            Room room =
+                    roomRepo.findById(roomId).orElseThrow(() -> new OurException("Room Not Found"));
             RoomDto roomDto = Utils.mapRoomEntityToRoomDtoPlusBookings(room);
 
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoom(roomDto);
-        }
-        catch (OurException ex){
+        } catch (OurException ex) {
             response.setStatusCode(400);
             response.setMessage("");
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
             response.setMessage(ex.getMessage());
         }
@@ -169,17 +160,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Response getAvailableRoomsByDateAndType(LocalDate checkInDate, LocalDate checkOutDate, String roomType) {
+    public Response getAvailableRoomsByDateAndType(
+            LocalDate checkInDate, LocalDate checkOutDate, String roomType) {
         Response response = new Response();
-        try{
-            List<Room> availableRooms = roomRepo.findAvailableRoomsByDateAndType(checkInDate,checkOutDate,roomType);
+        try {
+            List<Room> availableRooms =
+                    roomRepo.findAvailableRoomsByDateAndType(checkInDate, checkOutDate, roomType);
             List<RoomDto> roomDtoList = Utils.mapRoomListEntityToRoomListDto(availableRooms);
 
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoomList(roomDtoList);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
             response.setMessage(ex.getMessage());
         }
@@ -189,15 +181,14 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Response getAllAvailableRooms() {
         Response response = new Response();
-        try{
+        try {
             List<Room> availableRooms = roomRepo.getAllAvailableRooms();
             List<RoomDto> roomDtoList = Utils.mapRoomListEntityToRoomListDto(availableRooms);
 
             response.setStatusCode(200);
             response.setMessage("successful");
             response.setRoomList(roomDtoList);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             response.setStatusCode(500);
             response.setMessage(ex.getMessage());
         }
