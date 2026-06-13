@@ -1,14 +1,12 @@
 package com.example.FiveStarHotel;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FiveStarHotelApplication{
+public class FiveStarHotelApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FiveStarHotelApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(FiveStarHotelApplication.class, args);
+    }
 }

@@ -134,6 +134,20 @@
 					<target>8</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.43.0</version>
+				<configuration>
+					<java>
+						<removeUnusedImports />
+						<googleJavaFormat>
+							<version>1.17.0</version>
+							<style>AOSP</style> </googleJavaFormat>
+					</java>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
